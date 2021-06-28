@@ -1,0 +1,63 @@
+name: Pull Request
+
+on: pull_request
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        java: [ 8, 11 ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup java ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Unit tests
+        run: ./gradlew test --stacktrace
+      - uses: actions/upload-artifact@v2
+        with:
+          name: unit tests (Java ${{ matrix.java }})
+          path: library/build/reports/tests
+
+  lint:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Android Lint
+        run: ./gradlew lint --stacktrace
+      - uses: actions/upload-artifact@v2
+        with:
+          name: lint reports
+          path: build/lint-reports
