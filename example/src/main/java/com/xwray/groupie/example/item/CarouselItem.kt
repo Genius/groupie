@@ -1,5 +1,6 @@
 package com.xwray.groupie.example.item
 
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupieAdapter
@@ -18,11 +19,17 @@ class CarouselItem(private val carouselDecoration: RecyclerView.ItemDecoration,
         return R.layout.item_carousel
     }
 
+    override fun createViewHolder(itemView: View): GroupieViewHolder {
+        return super.createViewHolder(itemView).apply {
+            recyclerView.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = carouselAdapter
+            }
+        }
+    }
+
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = carouselAdapter
-
             // We don't know if the layout we're passed has been bound before so
             // we need to ensure we don't register the item decoration multiple times,
             // by trying to remove it first. (Nothing happens if it's not registered.)

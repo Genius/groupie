@@ -34,11 +34,11 @@ public class CarouselItem extends BindableItem<ItemCarouselBinding> implements O
         RecyclerView recyclerView = viewHolder.binding.recyclerView;
         recyclerView.addItemDecoration(carouselDecoration);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(adapter);
         return viewHolder;
     }
 
     @Override public void bind(@NonNull ItemCarouselBinding viewBinding, int position) {
-        viewBinding.recyclerView.setAdapter(adapter);
     }
 
     @Override public int getLayout() {
