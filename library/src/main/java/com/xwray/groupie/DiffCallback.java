@@ -1,15 +1,21 @@
 package com.xwray.groupie;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.Collection;
+import java.util.Collections;
 
 class DiffCallback extends DiffUtil.Callback {
     private final int oldBodyItemCount;
     private final int newBodyItemCount;
     private final Collection<? extends Group> oldGroups;
     private final Collection<? extends Group> newGroups;
+
+    DiffCallback(@NonNull Group oldGroup, @NonNull Group newGroup) {
+        this(Collections.singletonList(oldGroup), Collections.singletonList(newGroup));
+    }
 
     DiffCallback(Collection<? extends Group> oldGroups, Collection<? extends Group> newGroups) {
         this.oldBodyItemCount = GroupUtils.getItemCount(oldGroups);
