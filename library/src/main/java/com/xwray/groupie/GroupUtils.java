@@ -6,7 +6,7 @@ import java.util.Collection;
 
 class GroupUtils {
     @NonNull
-    static Item getItem(Collection<? extends Group> groups, int position) {
+    static Item getItem(Collection<? extends Group> groups, int position) throws IndexOutOfBoundsException {
         int previousPosition = 0;
 
         for (Group group : groups) {
